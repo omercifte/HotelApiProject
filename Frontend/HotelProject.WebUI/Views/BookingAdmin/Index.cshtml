@@ -1,0 +1,71 @@
+﻿@model List<ResultBookingDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<!-- Durum renkleri için CSS -->
+<style>
+    .status-approved {
+        color: green;
+        font-weight: bold;
+    }
+    .status-cancelled {
+        color: red;
+        font-weight: bold;
+    }
+    .status-waiting {
+        color: blue;
+        font-weight: bold;
+    }
+
+    .status-ilkkayit {
+        color: orange;
+        font-weight: bold;
+    }
+</style>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Misafir</th>
+                <th>Giriş Tarihi</th>
+                <th>Çıkış Tarihi</th>
+                <th>Durum</th>
+                <th>Onayla</th>
+                <th>İptal Et</th>
+                <th>Beklet</th>
+                <th>Güncelle</th>
+                <th>Detaylar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+                <tr>
+                    <th>@count</th>
+                    <td>@item.Name</td>
+                    <td>@(((DateTime)item.Checkin).ToString("dd-MMM-yyyy"))</td>
+                    <td>@(((DateTime)item.Checkout).ToString("dd-MMM-yyyy"))</td>
+                    <td>
+                        <span class="@(item.Status == "Onaylandı" ? "status-approved" :
+                                        item.Status == "İptal Edildi" ? "status-cancelled" :
+                                        item.Status == "Müşteri Aranacak" ? "status-waiting" :
+                                        item.Status == "Onay Bekliyor" ? "status-ilkkayit" : "")">
+                            @item.Status
+                        </span>
+                    </td>
+                    <td><a href="/BookingAdmin/ApprovedReservation2/@item.BookingID" class="btn btn-outline-primary">Onayla</a></td>
+                    <td><a href="/BookingAdmin/CancelReservation/@item.BookingID" class="btn btn-outline-danger">İptal Et</a></td>
+                    <td><a href="/BookingAdmin/WaitReservation/@item.BookingID" class="btn btn-outline-warning">Beklet</a></td>
+                    <td><a href="/BookingAdmin/UpdateBooking/@item.BookingID" class="btn btn-outline-info">Güncelle</a></td>
+                    <td><a href="/BookingAdmin/DeleteBooking/@item.BookingID" class="btn btn-outline-dark">Sil</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
