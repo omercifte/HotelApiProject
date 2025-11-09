@@ -157,5 +157,12 @@ namespace HotelProject.WebUI.Controllers
         //    return View();
         //}
 
+        public async Task<IActionResult> DeleteMessage(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.DeleteAsync($"http://localhost:5299/api/Contact/{id}");
+            return RedirectToAction("Inbox");
+
+        }
     }
 }

@@ -41,5 +41,13 @@ namespace HotelProject.WebApi.Controllers
         {    
             return Ok(_contactService.TGetContactCount());
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteContact(int id)
+        {
+            var values = _contactService.TGetById(id);
+            _contactService.TDelete(values);
+            return Ok();
+        }
     }
 }
